@@ -12,102 +12,65 @@ export class AuthService {
   isValid: boolean = false;
   userName: string = '';
   userEmail: string = '';
-  providerGoogle = new firebase.auth.GoogleAuthProvider();
-  providerGithub = new firebase.auth.GithubAuthProvider();
-  providerTwitter = new firebase.auth.TwitterAuthProvider();
-  providerFacebook = new firebase.auth.FacebookAuthProvider();
   token: string;
 
   validityUpdated = new Subject<{}>();
 
   constructor(private http: Http, private router: Router, private zone: NgZone) { }
 
-  onSignInGoogle() {
-    firebase.auth().signInWithPopup(this.providerGoogle).then((result) => {
-      this.token = result.credential.accessToken;
-      this.userName = result.additionalUserInfo.profile.name;
-      this.userEmail = result.additionalUserInfo.profile.email;
-      // console.log(result.additionalUserInfo.profile);
+  // onSignInFacebook() {
+  //   firebase.auth().signInWithPopup(this.providerFacebook).then((result) => {
+  //     this.token = result.credential.accessToken;
+  //     this.userName = result.additionalUserInfo.profile.name;
+  //     this.userEmail = result.additionalUserInfo.profile.email;
+  //     // console.log(result.additionalUserInfo.profile);
 
-      this.validityUpdated.next({
-        isValid: this.isAuthenticated(),
-        userName: this.userName,
-        userEmail: this.userEmail
-      });
+  //     this.validityUpdated.next({
+  //       isValid: this.isAuthenticated(),
+  //       userName: this.userName,
+  //       userEmail: this.userEmail
+  //     });
 
-      this.zone.run(() => {
-        this.router.navigate(['']);
-      })
-    }).catch((error) => {
-      alert(error.message);
-      console.log(error);
-    })
+  //     this.zone.run(() => {
+  //       this.router.navigate(['']);
+  //     })
+  //   }).catch((error) => {
+  //     alert(error.message);
+  //     console.log(error);
+  //   })
+  // }
+
+  onSignUp(email: string, password: string) {
+    firebase.auth().createUserWithEmailAndPassword(email, password).then(
+      (response) => {
+        this.router.navigate(['/']);
+        firebase.auth().currentUser.getIdToken().then(
+          (tk: string) => { this.token = tk; }
+        );
+      }
+    ).catch(
+      (error) => { console.log(error); }
+      );
   }
 
-  onSignInGithub() {
-    firebase.auth().signInWithPopup(this.providerGithub).then((result) => {
-      this.token = result.credential.accessToken;
-      this.userName = result.additionalUserInfo.profile.name;
-      this.userEmail = result.additionalUserInfo.profile.email;
-      // console.log(result.additionalUserInfo);
-
-      this.validityUpdated.next({
-        isValid: this.isAuthenticated(),
-        userName: this.userName,
-        userEmail: this.userEmail
-      });
-
-      this.zone.run(() => {
-        this.router.navigate(['']);
-      })
-    }).catch((error) => {
-      alert(error.message);
-      console.log(error);
-    })
+  onSignIn(email: string, password: string) {
+    firebase.auth().signInWithEmailAndPassword(email, password).then(
+      (response) => {
+        this.router.navigate(['/']);
+        firebase.auth().currentUser.getIdToken().then(
+          (tk: string) => { this.token = tk; }
+        );
+      }
+    ).catch(
+      (error) => { console.log(error); }
+      );
   }
 
-  onSignInTwitter() {
-    firebase.auth().signInWithPopup(this.providerTwitter).then((result) => {
-      this.token = result.credential.accessToken;
-      this.userName = result.additionalUserInfo.profile.name;
-      this.userEmail = result.additionalUserInfo.username;
-      // console.log(result);
-
-      this.validityUpdated.next({
-        isValid: this.isAuthenticated(),
-        userName: this.userName,
-        userEmail: this.userEmail
-      });
-
-      this.zone.run(() => {
-        this.router.navigate(['']);
-      })
-    }).catch((error) => {
-      alert(error.message);
-      console.log(error);
-    })
-  }
-
-  onSignInFacebook() {
-    firebase.auth().signInWithPopup(this.providerFacebook).then((result) => {
-      this.token = result.credential.accessToken;
-      this.userName = result.additionalUserInfo.profile.name;
-      this.userEmail = result.additionalUserInfo.profile.email;
-      // console.log(result.additionalUserInfo.profile);
-
-      this.validityUpdated.next({
-        isValid: this.isAuthenticated(),
-        userName: this.userName,
-        userEmail: this.userEmail
-      });
-
-      this.zone.run(() => {
-        this.router.navigate(['']);
-      })
-    }).catch((error) => {
-      alert(error.message);
-      console.log(error);
-    })
+  getToken() {
+    firebase.auth().currentUser.getIdToken().then(
+      (tk: string) => { this.token = tk }
+    );
+    return this.token;
   }
 
   onSignOut() {
@@ -121,7 +84,7 @@ export class AuthService {
       userEmail: this.userEmail
     });
 
-    this.router.navigate(['/']);
+    this.router.navigate(['/login']);
   }
 
   isAuthenticated() {

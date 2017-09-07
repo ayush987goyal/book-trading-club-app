@@ -3,11 +3,11 @@ import { AuthService } from '../auth.service';
 import { NgForm } from '@angular/forms';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  selector: 'app-signup',
+  templateUrl: './signup.component.html',
+  styleUrls: ['./signup.component.css']
 })
-export class LoginComponent implements OnInit {
+export class SignupComponent implements OnInit {
 
   @ViewChild('f') form: NgForm;
 
@@ -16,8 +16,8 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
   }
 
-  onSubmit(f) {
-    this.authService.onSignIn(this.form.value.email, this.form.value.password);
+  onSubmit() {
+    this.authService.onSignUp(this.form.value.email, this.form.value.password);
     this.form.reset();
   }
 

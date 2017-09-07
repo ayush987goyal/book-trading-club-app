@@ -11,11 +11,12 @@
                 </ng-template>
           </ul> -->
           <ul class="nav navbar-nav navbar-right">
-                <ng-template [ngIf]="!isValid" > 
-                    <li><a routerLink="/login">Login</a></li>
+                <ng-template [ngIf]="!isAuthenticated()" > 
+                    <li routerLinkActive="active"><a routerLink="/signup">Signup</a></li>
+                    <li routerLinkActive="active"><a routerLink="/login">Login</a></li>
                 </ng-template>
-                <ng-template [ngIf]="isValid">
-                    <li><a style="cursor: pointer;" routerLink="/mypolls">{{userName}}</a></li>
+                <ng-template [ngIf]="isAuthenticated()">
+                    <li><a style="cursor: pointer;" routerLink="/">My books</a></li>
                     <li><a style="cursor: pointer;" (click)="onSignOut()">Logout</a></li>
                 </ng-template>
           </ul>
