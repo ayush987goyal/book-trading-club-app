@@ -1,0 +1,29 @@
+{
+  "name": "book-trading-club-app",
+  "version": "0.0.1",
+  "description": "Trade books with users!",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "express": "^4.15.4",
+    "http": "0.0.0",
+    "mongodb": "^2.2.31",
+    "path": "^0.12.7",
+    "request-ip": "^2.0.2"
+  },
+  "engines": {
+    "node": "8.x"
+  },
+  "repository": {
+    "url": ""
+  },
+  "license": "MIT",
+  "keywords": [
+    "node",
+    "express"
+  ],
+  "devDependencies": {}
+}

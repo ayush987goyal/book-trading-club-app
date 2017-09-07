@@ -1,0 +1,21 @@
+.container {
+    margin-top: 20px;
+}
+
+.inner {
+  display: table;
+  margin: 0 auto;
+}
+
+.brandBtn {
+    color: white;
+    font-size: 20px;
+    border: none;
+    height: 40px;
+    width: 120px;
+}
+
+.brandIcon {
+    font-size: 25px;
+    margin-right: 10px;
+}
