@@ -14,31 +14,9 @@ export class AuthService {
   userEmail: string = '';
   token: string;
 
-  validityUpdated = new Subject<{}>();
+  errorUpdated = new Subject<{}>();
 
   constructor(private http: Http, private router: Router, private zone: NgZone) { }
-
-  // onSignInFacebook() {
-  //   firebase.auth().signInWithPopup(this.providerFacebook).then((result) => {
-  //     this.token = result.credential.accessToken;
-  //     this.userName = result.additionalUserInfo.profile.name;
-  //     this.userEmail = result.additionalUserInfo.profile.email;
-  //     // console.log(result.additionalUserInfo.profile);
-
-  //     this.validityUpdated.next({
-  //       isValid: this.isAuthenticated(),
-  //       userName: this.userName,
-  //       userEmail: this.userEmail
-  //     });
-
-  //     this.zone.run(() => {
-  //       this.router.navigate(['']);
-  //     })
-  //   }).catch((error) => {
-  //     alert(error.message);
-  //     console.log(error);
-  //   })
-  // }
 
   onSignUp(email: string, password: string) {
     firebase.auth().createUserWithEmailAndPassword(email, password).then(
@@ -49,7 +27,10 @@ export class AuthService {
         );
       }
     ).catch(
-      (error) => { console.log(error); }
+      (error) => {
+        // console.log(error);
+        this.errorUpdated.next(error);
+      }
       );
   }
 
@@ -62,7 +43,10 @@ export class AuthService {
         );
       }
     ).catch(
-      (error) => { console.log(error); }
+      (error) => {
+        // console.log(error);
+        this.errorUpdated.next(error);
+      }
       );
   }
 
@@ -78,11 +62,6 @@ export class AuthService {
     this.token = null;
     this.userEmail = '';
     this.userName = '';
-    this.validityUpdated.next({
-      isValid: this.isAuthenticated(),
-      userName: this.userName,
-      userEmail: this.userEmail
-    });
 
     this.router.navigate(['/login']);
   }

@@ -13,6 +13,9 @@
             <input type="password" class="form-control" id="password" name="password" required ngModel>
         </div>
         <div>
+            <div class="row" *ngIf="errorMessage" class="form-group" style="color: red">
+                {{errorMessage}}
+            </div>
             <div class="row">
                 <div class="col-md-1">
                     <button class="btn btn-success" type="submit" [disabled]="!f.valid">Signup</button>    

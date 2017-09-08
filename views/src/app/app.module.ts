@@ -9,19 +9,25 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './core/header/header.component';
 import { HomeComponent } from './core/home/home.component';
+import { AllbooksComponent } from './core/allbooks/allbooks.component';
+import { MybooksComponent } from './core/mybooks/mybooks.component';
+import { MyprofileComponent } from './core/myprofile/myprofile.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    HomeComponent
+    HomeComponent,
+    AllbooksComponent,
+    MybooksComponent,
+    MyprofileComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
+    HttpModule,
     AppRoutingModule,
     AuthModule,
-    HttpModule,
     BrowserAnimationsModule
   ],
   providers: [],
