@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { NgForm } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
+import { MongoService } from '../../mongo.service';
 
 @Component({
   selector: 'app-signup',
@@ -15,7 +16,7 @@ export class SignupComponent implements OnInit, OnDestroy {
   errorMessage: string;
   subscription: Subscription;
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private mongoService: MongoService) { }
 
   ngOnInit() {
    this.subscription = this.authService.errorUpdated.subscribe(
@@ -31,7 +32,7 @@ export class SignupComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     this.errorMessage = '';
-    this.authService.onSignUp(this.form.value.email, this.form.value.password);
+    this.authService.onSignUp(this.form.value.name, this.form.value.email, this.form.value.password);
     this.form.reset();
   }
 

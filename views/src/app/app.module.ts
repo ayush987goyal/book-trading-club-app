@@ -3,6 +3,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from "@angular/forms";
 import { HttpModule } from '@angular/http';
+import { ApolloClient, createNetworkInterface  } from 'apollo-client';
+import { ApolloModule } from 'apollo-angular';
+
 import { AuthModule } from './auth/auth.module';
 import { AppRoutingModule } from './app-routing.module';
 
@@ -12,6 +15,18 @@ import { HomeComponent } from './core/home/home.component';
 import { AllbooksComponent } from './core/allbooks/allbooks.component';
 import { MybooksComponent } from './core/mybooks/mybooks.component';
 import { MyprofileComponent } from './core/myprofile/myprofile.component';
+import { MongoService } from './mongo.service';
+import { environment } from '../environments/environment';
+
+const client = new ApolloClient({
+  networkInterface: createNetworkInterface({
+    uri: environment.localUrl + '/graphql'
+  }),
+});
+
+export function provideClient(): ApolloClient {
+  return client;
+}
 
 @NgModule({
   declarations: [
@@ -28,9 +43,10 @@ import { MyprofileComponent } from './core/myprofile/myprofile.component';
     HttpModule,
     AppRoutingModule,
     AuthModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    ApolloModule.forRoot(provideClient)
   ],
-  providers: [],
+  providers: [MongoService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

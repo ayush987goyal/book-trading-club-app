@@ -1,6 +1,10 @@
-var mongodb = require('mongodb');
-var ObjectId = require('mongodb').ObjectID;
-var exports = module.exports = {};
+const {MongoClient} = require('mongodb');
 
-var MongoClient = mongodb.MongoClient;
-var dbUrl = process.env.MONGOLAB_URI;
+const MONGO_URL = process.env.MONGOLAB_URI;
+
+module.exports = async () => {
+    const db = await MongoClient.connect(MONGO_URL);
+    return {
+        Users: db.collection('bookUsers'),
+    };
+}

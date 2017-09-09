@@ -5,6 +5,7 @@ import { Observable } from "rxjs/Observable";
 import { Subject } from 'rxjs/Subject';
 import { Router } from '@angular/router';
 import * as firebase from 'firebase';
+import { MongoService } from '../mongo.service';
 
 @Injectable()
 export class AuthService {
@@ -16,15 +17,16 @@ export class AuthService {
 
   errorUpdated = new Subject<{}>();
 
-  constructor(private http: Http, private router: Router, private zone: NgZone) { }
+  constructor(private http: Http, private router: Router, private zone: NgZone, private mongoService: MongoService) { }
 
-  onSignUp(email: string, password: string) {
+  onSignUp(name: string, email: string, password: string) {
     firebase.auth().createUserWithEmailAndPassword(email, password).then(
       (response) => {
         this.router.navigate(['/']);
         firebase.auth().currentUser.getIdToken().then(
           (tk: string) => { this.token = tk; }
         );
+        this.mongoService.addUserToMongo(name, email);
       }
     ).catch(
       (error) => {

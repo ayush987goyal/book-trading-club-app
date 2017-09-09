@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
     );
   }
 
-  onSubmit(f) {
+  onSubmit() {
     this.errorMessage = '';
     this.authService.onSignIn(this.form.value.email, this.form.value.password);
     this.form.reset();
