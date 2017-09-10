@@ -19,12 +19,16 @@ const typeDefs = `
 
     type Query {
         allBooks: [User!]!
+
+        userById(email: String!): User!
     }
 
     type Mutation {
         addUser(name: String!, email: String!): User
 
         addBook(title: String!, img: String!): Book
+
+        updateUser(email: String!, name: String!, city: String!, state: String!): String
     }
 `;
 

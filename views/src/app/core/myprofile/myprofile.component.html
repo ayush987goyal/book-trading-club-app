@@ -1,3 +1,27 @@
-<p>
-  myprofile works!
-</p>
+<div class="contianer">
+  <div class="header">
+    Update Profile
+  </div>
+    <form #f="ngForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="name">Full Name</label>
+        <input type="text" class="form-control" id="name" name="name" ngModel>
+      </div>
+      <div class="form-group">
+        <label for="city">City</label>
+        <input type="text" class="form-control" id="city" name="city" ngModel>
+      </div>
+      <div class="form-group">
+        <label for="state">State</label>
+        <input type="text" class="form-control" id="state" name="state" ngModel>
+      </div>
+      <div>
+        <div class="row" *ngIf="message" class="form-group" style="color: green">
+          {{message}}
+        </div>
+        <div class="row">
+          <button type="submit" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </form>
+</div>

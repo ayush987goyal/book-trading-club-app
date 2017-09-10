@@ -13,13 +13,14 @@ export class AuthService {
   isValid: boolean = false;
   userName: string = '';
   userEmail: string = '';
+  userId: string = '';
   token: string;
 
   errorUpdated = new Subject<{}>();
 
   constructor(private http: Http, private router: Router, private zone: NgZone, private mongoService: MongoService) { }
 
-  onSignUp(name: string, email: string, password: string) {
+    onSignUp(name: string, email: string, password: string) {
     firebase.auth().createUserWithEmailAndPassword(email, password).then(
       (response) => {
         this.router.navigate(['/']);
@@ -43,6 +44,7 @@ export class AuthService {
         firebase.auth().currentUser.getIdToken().then(
           (tk: string) => { this.token = tk; }
         );
+        this.mongoService.userEmail = email;
       }
     ).catch(
       (error) => {
@@ -62,8 +64,7 @@ export class AuthService {
   onSignOut() {
     firebase.auth().signOut();
     this.token = null;
-    this.userEmail = '';
-    this.userName = '';
+    this.mongoService.unsetUserDetails();
 
     this.router.navigate(['/login']);
   }
