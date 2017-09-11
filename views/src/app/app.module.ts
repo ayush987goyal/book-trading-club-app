@@ -19,6 +19,9 @@ import { MongoService } from './mongo.service';
 import { environment } from '../environments/environment';
 import { BookComponent } from './core/book/book.component';
 import { AuthGuard } from './auth/auth-guard.service';
+import { AddbooksComponent } from './core/addbooks/addbooks.component';
+import { ThripletsPipe } from './thriplets.pipe';
+import { UserService } from './user.service';
 
 const client = new ApolloClient({
   networkInterface: createNetworkInterface({
@@ -38,7 +41,9 @@ export function provideClient(): ApolloClient {
     AllbooksComponent,
     MybooksComponent,
     MyprofileComponent,
-    BookComponent
+    BookComponent,
+    AddbooksComponent,
+    ThripletsPipe
   ],
   imports: [
     BrowserModule,
@@ -49,7 +54,7 @@ export function provideClient(): ApolloClient {
     BrowserAnimationsModule,
     ApolloModule.forRoot(provideClient)
   ],
-  providers: [MongoService, AuthGuard],
+  providers: [MongoService, AuthGuard, UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

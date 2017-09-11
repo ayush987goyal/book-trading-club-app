@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MongoService } from '../../mongo.service';
+import { UserService } from '../../user.service';
 
 @Component({
   selector: 'app-myprofile',
@@ -12,10 +13,10 @@ export class MyprofileComponent implements OnInit {
   @ViewChild('f') form: NgForm;
   message: string;
 
-  constructor(private mongoService: MongoService) { }
+  constructor(private mongoService: MongoService, private userService: UserService) { }
 
   ngOnInit() {
-    this.mongoService.getUserById(this.mongoService.userEmail).subscribe(
+    this.mongoService.getUserById(this.userService.userEmail).subscribe(
       (data) => {
         // console.log(data);
         this.form.controls['name'].setValue(data.data['userById'].name);
@@ -30,7 +31,7 @@ export class MyprofileComponent implements OnInit {
 
   onSubmit() {
     console.log(this.form.value);
-    this.mongoService.updateUserDetails(this.mongoService.userEmail, this.form.value.name,
+    this.mongoService.updateUserDetails(this.userService.userEmail, this.form.value.name,
       this.form.value.city, this.form.value.state).subscribe(
         (data) => {
           // console.log(data);

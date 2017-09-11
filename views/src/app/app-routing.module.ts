@@ -7,12 +7,14 @@ import { AllbooksComponent } from './core/allbooks/allbooks.component';
 import { MybooksComponent } from './core/mybooks/mybooks.component';
 import { MyprofileComponent } from './core/myprofile/myprofile.component';
 import { AuthGuard } from './auth/auth-guard.service';
+import { AddbooksComponent } from './core/addbooks/addbooks.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'allbooks', component: AllbooksComponent , canActivate: [AuthGuard]},
   { path: 'mybooks', component: MybooksComponent, canActivate: [AuthGuard]},
-  { path: 'myprofile', component: MyprofileComponent, canActivate: [AuthGuard]}
+  { path: 'myprofile', component: MyprofileComponent, canActivate: [AuthGuard]},
+  { path: 'addbooks', component: AddbooksComponent, canActivate: [AuthGuard]}
 ];
 
 @NgModule({

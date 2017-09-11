@@ -15,7 +15,9 @@ module.exports = {
             const newuser = {
                 name: data.name,
                 email: data.email,
-                books: []
+                books: [],
+                requestedBooks: [],
+                pendingBooks: []
             };
             const response = await Users.insert(newuser);
             return Object.assign({_id: response.insertedIds[0]}, newuser);
@@ -30,6 +32,25 @@ module.exports = {
                         name: data.name,
                         city: data.city,
                         state: data.state
+                    }
+                }
+            );
+            return response.result.electionId;
+        },
+        addBook: async (root, data, {mongo: {Users}}) => {
+            const newBook = {
+                _id: data._id,
+                title: data.title,
+                img: data.img,
+                isRequested: data.isRequested
+            }
+            const response = await Users.update(
+                {
+                    email: data.email
+                },
+                {
+                    $addToSet: {
+                        books: newBook
                     }
                 }
             );

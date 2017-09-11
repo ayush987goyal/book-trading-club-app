@@ -1,30 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
-import { addUser, userById, updateUser } from './schemaDetails';
+import { addUser, userById, updateUser, addBook } from './schemaDetails';
+import { UserService } from './user.service';
 
 
 @Injectable()
 export class MongoService {
 
-  userName: string = '';
-  userEmail: string = '';
-  userId: string = '';
-
-  constructor(private apollo: Apollo) { }
-
-  setUserDetails(name: string, email: string, id: string) {
-    this.userName = name;
-    this.userEmail = email;
-    this.userId = id;
-    console.log(this.userId);
-  }
-
-  unsetUserDetails() {
-    this.userName = '';
-    this.userEmail = '';
-    this.userId = '';
-  }
+  constructor(private apollo: Apollo, private userService: UserService) { }
 
   addUserToMongo(userName: string, userEmail: string) {
     this.apollo.mutate({
@@ -36,7 +20,8 @@ export class MongoService {
     }).subscribe(
       (data) => {
         // console.log(data);
-        this.setUserDetails(data.data['addUser'].name, data.data['addUser'].email, data.data['addUser']._id);
+        this.userService.setUserDetails(data.data['addUser'].name, data.data['addUser'].email, data.data['addUser']._id,
+        data.data['addUser'].city, data.data['addUser'].state, data.data['addUser'].books);
       },
       (err) => {
         console.log(err);
@@ -59,6 +44,16 @@ export class MongoService {
       mutation: updateUser,
       variables: {
         email: userEmail, name: userName, city: userCity, state: userState
+      }
+    });
+  }
+
+  addBookToUser(userEmail: string, bookDetails: any) {
+    return this.apollo.mutate({
+      mutation: addBook,
+      variables: {
+        email: userEmail, _id: bookDetails._id, title: bookDetails.title,
+        img: bookDetails.img, isRequested: bookDetails.isRequested
       }
     });
   }

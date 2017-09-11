@@ -5,7 +5,8 @@ const typeDefs = `
     type Book {
         _id: ID!,
         title: String!,
-        img: String!
+        img: String!,
+        isRequested: Boolean!
     }
 
     type User {
@@ -14,7 +15,9 @@ const typeDefs = `
         name: String!,
         city: String,
         state: String,
-        books: [Book]
+        books: [Book],
+        requestedBooks: [Book],
+        pendingBooks: [Book]
     }
 
     type Query {
@@ -26,7 +29,7 @@ const typeDefs = `
     type Mutation {
         addUser(name: String!, email: String!): User
 
-        addBook(title: String!, img: String!): Book
+        addBook(email: String!, _id: ID!, title: String!, img: String!, isRequested: Boolean!): String
 
         updateUser(email: String!, name: String!, city: String!, state: String!): String
     }

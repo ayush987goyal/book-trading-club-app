@@ -1,0 +1,27 @@
+<div class="container">
+  <div class="header">
+    Add books
+  </div>
+  <form #f="ngForm" (ngSubmit)="onSearch()">
+    <div class="row">
+      <div class="col-md-4">
+        <input type="text" class="form-control" placeholder="Title" name="term" ngModel required>
+      </div>
+      <div class="col-md-2">
+        <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i>  Search</button>
+      </div>
+    </div>
+  </form>
+  <div *ngIf="isLoading">
+      <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+      <span class="sr-only">Loading...</span>
+  </div>
+  <div class="div" *ngIf="searchList && !isLoading">
+    <div class="row container" *ngFor="let item of searchList | thriplets; let i = index">
+      <div class="col-md-4" *ngFor="let bookItem of item; let j = index">
+        <app-book [bookDetails]="bookItem" *ngIf="bookItem"></app-book>
+        <button class="btn btn-success" (click)="onAdd(3*i + j)" *ngIf="bookItem">Add</button>
+      </div>
+    </div>
+  </div>
+</div>

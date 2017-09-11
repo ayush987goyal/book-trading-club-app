@@ -6,19 +6,17 @@ import { Subject } from 'rxjs/Subject';
 import { Router } from '@angular/router';
 import * as firebase from 'firebase';
 import { MongoService } from '../mongo.service';
+import { UserService } from '../user.service';
 
 @Injectable()
 export class AuthService {
 
   isValid: boolean = false;
-  userName: string = '';
-  userEmail: string = '';
-  userId: string = '';
   token: string;
 
   errorUpdated = new Subject<{}>();
 
-  constructor(private http: Http, private router: Router, private zone: NgZone, private mongoService: MongoService) { }
+  constructor(private http: Http, private router: Router, private zone: NgZone, private mongoService: MongoService, private userService: UserService) { }
 
     onSignUp(name: string, email: string, password: string) {
     firebase.auth().createUserWithEmailAndPassword(email, password).then(
@@ -44,7 +42,7 @@ export class AuthService {
         firebase.auth().currentUser.getIdToken().then(
           (tk: string) => { this.token = tk; }
         );
-        this.mongoService.userEmail = email;
+        this.userService.userEmail = email;
       }
     ).catch(
       (error) => {
@@ -64,7 +62,7 @@ export class AuthService {
   onSignOut() {
     firebase.auth().signOut();
     this.token = null;
-    this.mongoService.unsetUserDetails();
+    this.userService.unsetUserDetails();
 
     this.router.navigate(['/login']);
   }
