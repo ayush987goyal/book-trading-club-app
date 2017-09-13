@@ -1,5 +1,18 @@
 import gql from 'graphql-tag';
 
+export const allBooks = gql`
+  query allBooks {
+    allBooks {
+      books {
+        _id
+        title
+        img
+        isRequested
+      }
+    }
+  }
+`;
+
 export const addUser = gql`
 mutation addUser($name: String!, $email: String!) {
   addUser(name: $name, email: $email) {
@@ -25,6 +38,8 @@ export const userById = gql`
       books {
         _id
         title
+        img
+        isRequested
       }
     }
   }
@@ -39,5 +54,11 @@ export const updateUser = gql`
 export const addBook = gql`
   mutation addBook($email: String!, $_id: ID!, $title: String!, $img: String!, $isRequested: Boolean!) {
     addBook(email: $email, _id: $_id, title: $title, img: $img, isRequested: $isRequested)
+  }
+`;
+
+export const removeBook = gql`
+  mutation removeBook($email: String!, $_id: ID!) {
+    removeBook(email: $email, _id: $_id)
   }
 `;

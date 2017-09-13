@@ -55,6 +55,20 @@ module.exports = {
                 }
             );
             return response.result.electionId;
+        },
+        removeBook: async (root, data, {mongo: {Users}}) => {
+            const response = await Users.update(
+                {
+                    email: data.email
+                },
+                {
+                    $pull: {
+                        books: {
+                            _id: data._id
+                        }
+                    }
+                }
+            );
         }
     }
 }

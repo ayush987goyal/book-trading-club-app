@@ -31,6 +31,8 @@ const typeDefs = `
 
         addBook(email: String!, _id: ID!, title: String!, img: String!, isRequested: Boolean!): String
 
+        removeBook(email: String!, _id: ID!): String
+
         updateUser(email: String!, name: String!, city: String!, state: String!): String
     }
 `;

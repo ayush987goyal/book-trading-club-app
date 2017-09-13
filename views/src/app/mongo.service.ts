@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
-import { addUser, userById, updateUser, addBook } from './schemaDetails';
+import { addUser, userById, updateUser, addBook, removeBook, allBooks } from './schemaDetails';
 import { UserService } from './user.service';
 
 
@@ -9,6 +9,13 @@ import { UserService } from './user.service';
 export class MongoService {
 
   constructor(private apollo: Apollo, private userService: UserService) { }
+
+  getAllBooks() {
+    return this.apollo.query({
+      query: allBooks,
+      fetchPolicy: 'network-only'
+    });
+  }
 
   addUserToMongo(userName: string, userEmail: string) {
     this.apollo.mutate({
@@ -54,6 +61,16 @@ export class MongoService {
       variables: {
         email: userEmail, _id: bookDetails._id, title: bookDetails.title,
         img: bookDetails.img, isRequested: bookDetails.isRequested
+      }
+    });
+  }
+
+  removeBookFromUser(userEmail: string, bookId: any) {
+    return this.apollo.mutate({
+      mutation: removeBook,
+      variables: {
+        email: userEmail,
+        _id: bookId
       }
     });
   }

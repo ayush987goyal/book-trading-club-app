@@ -39,13 +39,16 @@ export class AddbooksComponent implements OnInit {
   }
 
   onAdd(index: number) {
+    this.isLoading = true;
     this.mongoService.addBookToUser(this.userService.userEmail, this.searchList[index]).subscribe(
       (res) => {
-        console.log(res);
+        // console.log(res);
         this.router.navigate(['/mybooks']);
+        this.isLoading = false;
       },
       (err) => {
         console.log(err);
+        this.isLoading = false;
       }
     );
   }
