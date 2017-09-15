@@ -7,7 +7,7 @@ export class SearchService {
   constructor(private http: Http) { }
 
   searchBooks(term: string) {
-    return this.http.get('https://www.googleapis.com/books/v1/volumes?q=' + term).map(
+    return this.http.get('https://www.googleapis.com/books/v1/volumes?q=' + term + '&maxResults=12').map(
       (res) => { 
         let result = (res.json().items).map(obj => {
           return {

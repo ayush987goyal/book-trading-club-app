@@ -32,4 +32,8 @@ export class AllbooksComponent implements OnInit {
     );
   }
 
+  onRequest(index: number) {
+    console.log(index);
+  }
+
 }

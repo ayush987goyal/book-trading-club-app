@@ -18,9 +18,9 @@
   </div>
   <div class="div" *ngIf="searchList && !isLoading">
     <div class="row container" *ngFor="let item of searchList | thriplets; let i = index">
-      <div class="col-md-4" *ngFor="let bookItem of item; let j = index">
+      <div class="col-md-2" *ngFor="let bookItem of item; let j = index">
         <app-book [bookDetails]="bookItem" *ngIf="bookItem"></app-book>
-        <button class="btn btn-success" (click)="onAdd(3*i + j)" *ngIf="bookItem">Add</button>
+        <button class="btn btn-success" (click)="onAdd(6*i + j)" *ngIf="bookItem" title="Add"><i class="fa fa-plus" aria-hidden="true"></i></button>
       </div>
     </div>
   </div>

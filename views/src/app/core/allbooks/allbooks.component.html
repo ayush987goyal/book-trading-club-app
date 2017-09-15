@@ -9,9 +9,9 @@
 </div>
 <div class="div" *ngIf="allBooksList && !isLoading">
   <div class="row container" *ngFor="let item of allBooksList | thriplets; let i = index" style="margin-bottom: 20px;">
-    <div class="col-md-4" *ngFor="let bookItem of item; let j = index">
+    <div class="col-md-2" *ngFor="let bookItem of item; let j = index">
       <app-book [bookDetails]="bookItem" *ngIf="bookItem"></app-book>
-      <!-- <button class="btn btn-danger" (click)="onRemove(3*i + j)" *ngIf="bookItem">X</button> -->
+      <button class="btn btn-warning" (click)="onRequest(6*i + j)" *ngIf="bookItem && !bookItem['isRequested']" title="Request"><i class="fa fa-download" aria-hidden="true"></i></button>
     </div>
   </div>
 </div>
