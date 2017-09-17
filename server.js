@@ -16,7 +16,7 @@ const start = async() => {
     var server = http.createServer(app);
 
     app.use(bodyParser.json());
-    // app.use(express.static(path.resolve(__dirname, 'views/dist')));
+    app.use(express.static(path.resolve(__dirname, 'views/dist')));
 
     const mongo = await connectMongo();
     app.use('/graphql', bodyParser.json(), graphqlExpress({
@@ -30,9 +30,9 @@ const start = async() => {
         endpointURL: '/graphql',
     }));
 
-    // app.get('/*', (req, res) => {
-    //     res.sendFile(path.resolve(__dirname, 'views/dist/index.html'));
-    // })
+    app.get('/*', (req, res) => {
+        res.sendFile(path.resolve(__dirname, 'views/dist/index.html'));
+    })
 
     server.listen(process.env.PORT || 3000, process.env.IP || "0.0.0.0", () => {
         var addr = server.address();

@@ -53,6 +53,15 @@ export class MybooksComponent implements OnInit {
     }
   }
 
+  getStyle() {
+    if(this.approvalBooksList && this.approvalBooksList.length > 0) {
+      return "red";
+    }
+    else {
+      return "";
+    }
+  }
+
   pendingApproved(index: number) {
     this.mongoService.approveBookRequest(this.userService.userEmail, this.approvalBooksList[index].requestedBy, this.approvalBooksList[index]._id).subscribe(
       (data) => {

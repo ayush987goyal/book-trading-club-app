@@ -131,6 +131,17 @@ module.exports = {
                     }
                 }
             );
+
+            const remResponse = await Users.update(
+                {
+                    "books._id": data.bookId
+                },
+                {
+                    $set: {
+                        "books.$.isRequested": false
+                    }
+                }
+            );
         },
         rejectPending: async (root, data, {mongo : {Users}}) => {
             const response = await Users.update(
@@ -158,12 +169,25 @@ module.exports = {
                     }
                 }
             );
+
+            const remResponse = await Users.update(
+                {
+                    "books._id": data.bookId
+                },
+                {
+                    $set: {
+                        "books.$.isRequested": false
+                    }
+                }
+            );
         },
         approvePending: async (root, data, {mongo : {Users}}) => {
             const newRes = await Users.find(
                 {"books._id": data.bookId},
                 {_id: 0, books: {$elemMatch: {_id: data.bookId}} }
             ).toArray();
+
+            newRes[0].books[0].ownedBy = data.requestedBy;
 
             const responseNew = await Users.update(
                 {
@@ -193,6 +217,17 @@ module.exports = {
                         books: {
                             _id: data.bookId
                         }
+                    }
+                }
+            );
+
+            const remResponse = await Users.update(
+                {
+                    "books._id": data.bookId
+                },
+                {
+                    $set: {
+                        "books.$.isRequested": false
                     }
                 }
             );
