@@ -42,7 +42,8 @@ module.exports = {
                 _id: data._id,
                 title: data.title,
                 img: data.img,
-                isRequested: data.isRequested
+                isRequested: data.isRequested,
+                ownedBy: data.ownedBy
             }
             const response = await Users.update(
                 {
@@ -69,6 +70,109 @@ module.exports = {
                     }
                 }
             );
+        },
+        updateRequestedBooks: async (root, data, {mongo: {Users}}) => {
+            const newBook = {
+                _id: data._id,
+                title: data.title,
+                img: data.img,
+                isRequested: data.isRequested
+            }
+            let response;
+            if(data.isAdding) {
+                response = await Users.update(
+                    {
+                        email: data.email
+                    },
+                    {
+                        $addToSet: {
+                            requestedBooks: newBook
+                        }
+                    }
+                );
+            }
+            else {
+                response = await Users.update(
+                    {
+                        email: data.email
+                    },
+                    {
+                        $pull: {
+                            requestedBooks: {
+                                _id: data._id
+                            }
+                        }
+                    }
+                );
+            }
+            return response.result.electionId;
+        },
+        updatePendingBooks: async (root, data, {mongo: {Users}}) => {
+            const newBook = {
+                _id: data._id,
+                title: data.title,
+                img: data.img,
+                isRequested: data.isRequested
+            }
+            let response;
+            if(data.isAdding) {
+                response = await Users.update(
+                    {
+                        email: data.email
+                    },
+                    {
+                        $addToSet: {
+                            pendingBooks: newBook
+                        }
+                    }
+                );
+            }
+            else {
+                response = await Users.update(
+                    {
+                        email: data.email
+                    },
+                    {
+                        $pull: {
+                            pendingBooks: {
+                                _id: data._id
+                            }
+                        }
+                    }
+                );
+            }
+            return response.result.electionId;
+        },
+        updateRequestStatus: async (root, data, {mongo: {Users}}) => {
+            const response = await Users.update(
+                {
+                    "books._id": data._id 
+                },
+                {
+                    $set: {
+                        "books.$.isRequested": data.status
+                    },
+                    $addToSet: {
+                        pendingBooks: data._id
+                    }
+                }
+            );
+            const newRes = await Users.find(
+                {"books._id": data._id},
+                {_id: 0, books: {$elemMatch: {_id: data._id}} }
+            ).toArray();
+
+            const otherResponse = await Users.update(
+                {
+                    email: data.requestedBy
+                },
+                {
+                    $addToSet: {
+                        requestedBooks: newRes[0].books[0]
+                    }
+                }
+            );
+            return newRes[0].books[0];
         }
     }
 }

@@ -8,6 +8,7 @@ export const allBooks = gql`
         title
         img
         isRequested
+        ownedBy
       }
     }
   }
@@ -60,5 +61,17 @@ export const addBook = gql`
 export const removeBook = gql`
   mutation removeBook($email: String!, $_id: ID!) {
     removeBook(email: $email, _id: $_id)
+  }
+`;
+
+export const updateRequestStatus = gql`
+  mutation updateRequestStatus($_id: ID!, $status: Boolean!, $requestedBy: String!) {
+    updateRequestStatus(_id: $_id, status: $status, requestedBy: $requestedBy) {
+      _id
+      title
+      img
+      isRequested
+      ownedBy
+    }
   }
 `;

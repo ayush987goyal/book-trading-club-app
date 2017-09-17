@@ -21,7 +21,7 @@ export class AuthService {
     onSignUp(name: string, email: string, password: string) {
     firebase.auth().createUserWithEmailAndPassword(email, password).then(
       (response) => {
-        this.router.navigate(['/']);
+        this.router.navigate(['/allbooks']);
         firebase.auth().currentUser.getIdToken().then(
           (tk: string) => { this.token = tk; }
         );
@@ -38,7 +38,7 @@ export class AuthService {
   onSignIn(email: string, password: string) {
     firebase.auth().signInWithEmailAndPassword(email, password).then(
       (response) => {
-        this.router.navigate(['/']);
+        this.router.navigate(['/allbooks']);
         firebase.auth().currentUser.getIdToken().then(
           (tk: string) => { this.token = tk; }
         );

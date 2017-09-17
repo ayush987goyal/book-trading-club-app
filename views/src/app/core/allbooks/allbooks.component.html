@@ -1,6 +1,8 @@
-<p>
-  allbooks works!
-</p>
+<div class="container">
+  <div class="header">
+    Books added by all the users
+  </div>
+</div>
 <br>
 <br>
 <div *ngIf="isLoading">
@@ -11,7 +13,9 @@
   <div class="row container" *ngFor="let item of allBooksList | thriplets; let i = index" style="margin-bottom: 20px;">
     <div class="col-md-2" *ngFor="let bookItem of item; let j = index">
       <app-book [bookDetails]="bookItem" *ngIf="bookItem"></app-book>
-      <button class="btn btn-warning" (click)="onRequest(6*i + j)" *ngIf="bookItem && !bookItem['isRequested']" title="Request"><i class="fa fa-download" aria-hidden="true"></i></button>
+      <button class="btn btn-warning" (click)="onRequest(6*i + j)" 
+      *ngIf="bookItem && !bookItem['isRequested'] && (bookItem['ownedBy'] !== userEmail)" title="Request">
+      <i class="fa fa-download" aria-hidden="true"></i></button>
     </div>
   </div>
 </div>

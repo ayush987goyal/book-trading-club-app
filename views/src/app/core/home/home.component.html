@@ -1,3 +1,10 @@
-<p>
-  home works!
-</p>
+<div class="container">
+  <div class="inner">
+    <div class="header">
+      Welcome to BookTrade {{getUserName()}}!
+    </div>
+  </div>
+  <div class="inner" *ngIf="!isAuthenticated()">
+    <h3>Please login to start trading books!!!</h3>
+  </div>
+</div>

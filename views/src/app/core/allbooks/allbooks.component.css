@@ -1,0 +1,9 @@
+.header {
+  font-size: 35px;
+  margin-bottom: 20px;
+}
+
+.inner {
+  display: table;
+  margin: 0 auto;
+}

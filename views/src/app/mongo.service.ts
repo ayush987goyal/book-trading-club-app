@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
-import { addUser, userById, updateUser, addBook, removeBook, allBooks } from './schemaDetails';
+import { addUser, userById, updateUser, addBook, removeBook, allBooks, updateRequestStatus } from './schemaDetails';
 import { UserService } from './user.service';
 
 
@@ -71,6 +71,17 @@ export class MongoService {
       variables: {
         email: userEmail,
         _id: bookId
+      }
+    });
+  }
+
+  updateRequestStatusForBook(bookId: any, status: boolean, requestedByUser: string) {
+    return this.apollo.mutate({
+      mutation: updateRequestStatus,
+      variables: {
+        _id: bookId,
+        status: status,
+        requestedBy: requestedByUser
       }
     });
   }
