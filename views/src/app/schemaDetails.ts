@@ -43,7 +43,10 @@ export const userById = gql`
         isRequested
         ownedBy
       }
-      pendingBooks
+      pendingBooks {
+        _id
+        requestedBy
+      }
       requestedBooks {
         _id
         title
@@ -83,4 +86,22 @@ export const updateRequestStatus = gql`
       ownedBy
     }
   }
+`;
+
+export const cancelRequest = gql`
+  mutation cancelRequest($email: String!, $ownedBy: String!, $bookId: ID!) {
+    cancelRequest(email: $email, ownedBy: $ownedBy, bookId: $bookId)
+  }
+`;
+
+export const rejectPending = gql`
+  mutation rejectPending($email: String!, $requestedBy: String!, $bookId: ID!) {
+    rejectPending(email: $email, requestedBy: $requestedBy, bookId: $bookId)
+  }
+`;
+
+export const approvePending = gql`
+mutation approvePending($email: String!, $requestedBy: String!, $bookId: ID!) {
+  approvePending(email: $email, requestedBy: $requestedBy, bookId: $bookId)
+}
 `;

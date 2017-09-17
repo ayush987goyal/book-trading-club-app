@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
-import { addUser, userById, updateUser, addBook, removeBook, allBooks, updateRequestStatus } from './schemaDetails';
+import { addUser, userById, updateUser, addBook, removeBook, allBooks, updateRequestStatus, cancelRequest, rejectPending, approvePending } from './schemaDetails';
 import { UserService } from './user.service';
 
 
@@ -82,6 +82,39 @@ export class MongoService {
         _id: bookId,
         status: status,
         requestedBy: requestedByUser
+      }
+    });
+  }
+
+  cancelBookRequest(userEmail: string, ownedByEmail: string, bookId: string) {
+    return this.apollo.mutate({
+      mutation: cancelRequest,
+      variables: {
+        email: userEmail,
+        ownedBy: ownedByEmail,
+        bookId: bookId
+      }
+    });
+  }
+
+  rejectBookRequest(userEmail: string, requestedEmail: string, bookId: string) {
+    return this.apollo.mutate({
+      mutation: rejectPending,
+      variables: {
+        email: userEmail,
+        requestedBy: requestedEmail,
+        bookId: bookId
+      }
+    });
+  }
+
+  approveBookRequest(userEmail: string, requestedEmail: string, bookId: string) {
+    return this.apollo.mutate({
+      mutation: approvePending,
+      variables: {
+        email: userEmail,
+        requestedBy: requestedEmail,
+        bookId: bookId
       }
     });
   }

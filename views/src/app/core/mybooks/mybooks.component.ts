@@ -12,7 +12,7 @@ export class MybooksComponent implements OnInit {
   isLoading: boolean = false;
   myBooksList: any[];
   requestedBooksList: any[];
-  approvalBooksList: string[];  
+  approvalBooksList: any[];  
 
   constructor(private mongoService: MongoService, private userService: UserService) { }
 
@@ -51,6 +51,42 @@ export class MybooksComponent implements OnInit {
         return book.title;
       }
     }
+  }
+
+  pendingApproved(index: number) {
+    this.mongoService.approveBookRequest(this.userService.userEmail, this.approvalBooksList[index].requestedBy, this.approvalBooksList[index]._id).subscribe(
+      (data) => {
+        // console.log(data);
+        this.ngOnInit();
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
+
+  pendingRejected(index: number) {
+    this.mongoService.rejectBookRequest(this.userService.userEmail, this.approvalBooksList[index].requestedBy, this.approvalBooksList[index]._id).subscribe(
+      (data) => {
+        // console.log(data);
+        this.ngOnInit();
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
+
+  requestCancel(index: number) {
+    this.mongoService.cancelBookRequest(this.userService.userEmail, this.requestedBooksList[index].ownedBy, this.requestedBooksList[index]._id).subscribe(
+      (data) => {
+        // console.log(data);
+        this.ngOnInit();
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
   }
 
 }

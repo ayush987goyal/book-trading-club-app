@@ -10,6 +10,11 @@ const typeDefs = `
         ownedBy: String!
     }
 
+    type BookPending {
+        _id: ID!,
+        requestedBy: String!
+    }
+
     type User {
         _id: ID!,
         email: String!,
@@ -18,12 +23,7 @@ const typeDefs = `
         state: String,
         books: [Book],
         requestedBooks: [Book],
-        pendingBooks: [ID]
-    }
-
-    type BookPending {
-        _id: ID!,
-        requestedBy: String!
+        pendingBooks: [BookPending]
     }
 
     type Query {
@@ -39,9 +39,11 @@ const typeDefs = `
 
         removeBook(email: String!, _id: ID!): String
 
-        updateRequestedBooks(email: String!, isAdding: Boolean!, _id: ID!, title: String!, img: String!, isRequested: Boolean!): String
+        approvePending(email: String!, requestedBy: String!, bookId: ID!): String
 
-        updatePendingBooks(email: String!, isAdding: Boolean!, _id: ID!, title: String!, img: String!, isRequested: Boolean!): String
+        rejectPending(email: String!, requestedBy: String!, bookId: ID!): String
+
+        cancelRequest(email: String!, ownedBy: String!, bookId: ID!): String
 
         updateRequestStatus(_id: ID!, status: Boolean!, requestedBy: String!): Book
 

@@ -10,14 +10,14 @@
     <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordian">
       <div class="card-body">
         <ul class="list-group">
-          <li class="list-group-item" *ngFor="let bookId of approvalBooksList">
+          <li class="list-group-item" *ngFor="let book of approvalBooksList; let i = index">
             <div class="row">
               <div class="col-md-4">
-                {{getBookFromId(bookId)}}
+                {{getBookFromId(book._id)}}
               </div>
               <div class="col-md-2">
-                <button class="btn btn-success"><i class="fa fa-check" aria-hidden="true"></i></button>
-                <button class="btn btn-danger"><i class="fa fa-times" aria-hidden="true"></i></button>
+                <button class="btn btn-success" (click)="pendingApproved(i)"><i class="fa fa-check" aria-hidden="true"></i></button>
+                <button class="btn btn-danger" (click)="pendingRejected(i)"><i class="fa fa-times" aria-hidden="true"></i></button>
               </div>
             </div>
           </li>
@@ -36,13 +36,13 @@
       <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordian">
         <div class="card-body">
             <ul class="list-group">
-                <li class="list-group-item" *ngFor="let book of requestedBooksList">
+                <li class="list-group-item" *ngFor="let book of requestedBooksList; let i = index">
                   <div class="row">
                     <div class="col-md-4">
                       {{book?.title}}
                     </div>
                     <div class="col-md-2">
-                      <button class="btn btn-danger"><i class="fa fa-times" aria-hidden="true"></i></button>
+                      <button class="btn btn-danger" (click)="requestCancel(i)"><i class="fa fa-times" aria-hidden="true"></i></button>
                     </div>
                   </div>
                 </li>
@@ -55,9 +55,9 @@
 <div class="container">
   <div class="header">
     List of my books
+    <a class="btn btn-primary" routerLink="/addbooks">Add books</a>
   </div>
 </div>
-<a class="btn btn-primary" routerLink="/addbooks">Add books</a>
 <br>
 <br>
 <div *ngIf="isLoading">

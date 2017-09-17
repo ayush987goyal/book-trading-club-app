@@ -71,78 +71,6 @@ module.exports = {
                 }
             );
         },
-        updateRequestedBooks: async (root, data, {mongo: {Users}}) => {
-            const newBook = {
-                _id: data._id,
-                title: data.title,
-                img: data.img,
-                isRequested: data.isRequested
-            }
-            let response;
-            if(data.isAdding) {
-                response = await Users.update(
-                    {
-                        email: data.email
-                    },
-                    {
-                        $addToSet: {
-                            requestedBooks: newBook
-                        }
-                    }
-                );
-            }
-            else {
-                response = await Users.update(
-                    {
-                        email: data.email
-                    },
-                    {
-                        $pull: {
-                            requestedBooks: {
-                                _id: data._id
-                            }
-                        }
-                    }
-                );
-            }
-            return response.result.electionId;
-        },
-        updatePendingBooks: async (root, data, {mongo: {Users}}) => {
-            const newBook = {
-                _id: data._id,
-                title: data.title,
-                img: data.img,
-                isRequested: data.isRequested
-            }
-            let response;
-            if(data.isAdding) {
-                response = await Users.update(
-                    {
-                        email: data.email
-                    },
-                    {
-                        $addToSet: {
-                            pendingBooks: newBook
-                        }
-                    }
-                );
-            }
-            else {
-                response = await Users.update(
-                    {
-                        email: data.email
-                    },
-                    {
-                        $pull: {
-                            pendingBooks: {
-                                _id: data._id
-                            }
-                        }
-                    }
-                );
-            }
-            return response.result.electionId;
-        },
         updateRequestStatus: async (root, data, {mongo: {Users}}) => {
             const response = await Users.update(
                 {
@@ -153,7 +81,10 @@ module.exports = {
                         "books.$.isRequested": data.status
                     },
                     $addToSet: {
-                        pendingBooks: data._id
+                        pendingBooks: {
+                            _id: data._id,
+                            requestedBy: data.requestedBy
+                        }
                     }
                 }
             );
@@ -173,6 +104,98 @@ module.exports = {
                 }
             );
             return newRes[0].books[0];
+        },
+        cancelRequest: async (root, data, {mongo: {Users}}) => {
+            const response = await Users.update(
+                {
+                    email: data.email
+                },
+                {
+                    $pull: {
+                        requestedBooks: {
+                            _id: data.bookId
+                        }
+                    }
+                }
+            );
+
+            const responseNew = await Users.update(
+                {
+                    email: data.ownedBy
+                },
+                {
+                    $pull: {
+                        pendingBooks: {
+                            _id: data.bookId
+                        }
+                    }
+                }
+            );
+        },
+        rejectPending: async (root, data, {mongo : {Users}}) => {
+            const response = await Users.update(
+                {
+                    email: data.email
+                },
+                {
+                    $pull: {
+                        pendingBooks: {
+                            _id: data.bookId
+                        }
+                    }
+                }
+            );
+
+            const responseNew = await Users.update(
+                {
+                    email: data.requestedBy
+                },
+                {
+                    $pull: {
+                        requestedBooks: {
+                            _id: data.bookId
+                        }
+                    }
+                }
+            );
+        },
+        approvePending: async (root, data, {mongo : {Users}}) => {
+            const newRes = await Users.find(
+                {"books._id": data.bookId},
+                {_id: 0, books: {$elemMatch: {_id: data.bookId}} }
+            ).toArray();
+
+            const responseNew = await Users.update(
+                {
+                    email: data.requestedBy
+                },
+                {
+                    $pull: {
+                        requestedBooks: {
+                            _id: data.bookId
+                        }
+                    },
+                    $addToSet: {
+                        books: newRes[0].books[0]
+                    }
+                }
+            );
+
+            const response = await Users.update(
+                {
+                    email: data.email
+                },
+                {
+                    $pull: {
+                        pendingBooks: {
+                            _id: data.bookId
+                        },
+                        books: {
+                            _id: data.bookId
+                        }
+                    }
+                }
+            );
         }
     }
 }
