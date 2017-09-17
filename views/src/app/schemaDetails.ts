@@ -41,6 +41,15 @@ export const userById = gql`
         title
         img
         isRequested
+        ownedBy
+      }
+      pendingBooks
+      requestedBooks {
+        _id
+        title
+        img
+        isRequested
+        ownedBy
       }
     }
   }

@@ -21,6 +21,11 @@ const typeDefs = `
         pendingBooks: [ID]
     }
 
+    type BookPending {
+        _id: ID!,
+        requestedBy: String!
+    }
+
     type Query {
         allBooks: [User!]!
 

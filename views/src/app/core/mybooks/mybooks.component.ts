@@ -12,7 +12,7 @@ export class MybooksComponent implements OnInit {
   isLoading: boolean = false;
   myBooksList: any[];
   requestedBooksList: any[];
-  approvalBooksList: any[];  
+  approvalBooksList: string[];  
 
   constructor(private mongoService: MongoService, private userService: UserService) { }
 
@@ -23,6 +23,8 @@ export class MybooksComponent implements OnInit {
         // console.log(data.data['userById'].books);
         this.myBooksList = data.data['userById'].books;
         this.isLoading = false;
+        this.approvalBooksList = data.data['userById'].pendingBooks;
+        this.requestedBooksList = data.data['userById'].requestedBooks;
       },
       (err) => {
         console.log(err);
@@ -41,6 +43,14 @@ export class MybooksComponent implements OnInit {
         console.log(err);
       }
     );
+  }
+
+  getBookFromId(id: string) {
+    for(let book of this.myBooksList) {
+      if(book._id === id) {
+        return book.title;
+      }
+    }
   }
 
 }
