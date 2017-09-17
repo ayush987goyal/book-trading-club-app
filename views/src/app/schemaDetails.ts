@@ -65,8 +65,8 @@ export const updateUser = gql`
 `;
 
 export const addBook = gql`
-  mutation addBook($email: String!, $_id: ID!, $title: String!, $img: String!, $isRequested: Boolean!) {
-    addBook(email: $email, _id: $_id, title: $title, img: $img, isRequested: $isRequested)
+  mutation addBook($email: String!, $_id: ID!, $title: String!, $img: String!, $isRequested: Boolean!, $ownedBy: String!) {
+    addBook(email: $email, _id: $_id, title: $title, img: $img, isRequested: $isRequested, ownedBy: $ownedBy)
   }
 `;
 

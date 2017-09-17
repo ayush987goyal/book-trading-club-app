@@ -1,0 +1,8 @@
+.footer, .container:after {
+    /* height: 30px; */
+    position:absolute;
+    bottom: 0;
+    width:100%;
+    text-align: center;
+    background-color: #CEC6C6; 
+  }

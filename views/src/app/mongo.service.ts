@@ -60,7 +60,7 @@ export class MongoService {
       mutation: addBook,
       variables: {
         email: userEmail, _id: bookDetails._id, title: bookDetails.title,
-        img: bookDetails.img, isRequested: bookDetails.isRequested
+        img: bookDetails.img, isRequested: bookDetails.isRequested, ownedBy: bookDetails.ownedBy
       }
     });
   }
